@@ -1,0 +1,42 @@
+tasks:
+  dev:
+    desc: Run CLI directly
+    run:
+      - cmd: go run ./cmd/aiodl
+
+  deps:
+    desc: Download and tidy dependencies
+    run:
+      - cmd: go mod download
+      - cmd: go mod tidy
+
+  fmt:
+    desc: Format code
+    run:
+      - cmd: gofmt -s -w .
+
+  lint:
+    desc: Run linter
+    run:
+      - cmd: golangci-lint run ./...
+
+  lint:fix:
+    desc: Run linter with auto-fix
+    run:
+      - cmd: golangci-lint run --fix ./...
+
+  fix:
+    desc: Format and auto-fix linting
+    deps: [fmt, lint:fix]
+
+  test:
+    desc: Run tests
+    run:
+      - cmd: go test ./...
+
+  check:
+    desc: Check formatting, linting, and tests
+    run:
+      - cmd: gofmt -d .
+      - cmd: golangci-lint run ./...
+      - cmd: go test ./...
